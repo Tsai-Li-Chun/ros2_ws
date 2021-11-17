@@ -3,12 +3,13 @@
         {
             "name": "Linux",
             "includePath": [
+                "/usr/include/**",
                 "/opt/ros/foxy/include/**",
                 "~/ros2_ws/src/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
-            "cStandard": "gnu17",
+            "cStandard": "c17",
             "cppStandard": "c++20",
             "intelliSenseMode": "gcc-x64",
             "configurationProvider": "ms-vscode.cmake-tools"
