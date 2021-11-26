@@ -15,7 +15,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   	add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
+# 所需依賴
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
@@ -23,7 +23,9 @@ find_package(std_msgs REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-add_executable(01_publisher src/01_publisher.cpp)
+# 生成可執行文件與其所需來源檔
+add_executable(01_publisher 
+			src/01_publisher.cpp	)
 ament_target_dependencies(01_publisher rclcpp std_msgs)
 
 install(TARGETS

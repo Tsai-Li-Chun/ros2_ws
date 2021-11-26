@@ -7,10 +7,6 @@
 
 /* System Includes ------------------------------------------*/
 /* System Includes Begin */
-#include <chrono>
-#include <functional>
-#include <memory>
-#include <string>
 /* System Includes End */
 /* User Includes --------------------------------------------*/
 /* User Includes Begin */
@@ -20,7 +16,6 @@
 
 /* namespace ------------------------------------------------*/
 /* namespace Begin */
-using namespace std::chrono_literals;
 /* namespace End */
 
 
@@ -36,38 +31,40 @@ using namespace std::chrono_literals;
 
 /* Class --------------------------------------------------*/
 /* Class Begin */
-
-/* 建立發佈用node物件,從rclcpp裡提供的node基礎物件繼承 */
-class minimal_publisher : public rclcpp::Node
+class publisher_string : public rclcpp::Node
 {
 public:
-	/* 建構函數 */
-	minimal_publisher() : Node("minimal_publisher"),count_(0)
+	publisher_string():rclcpp::Node("publisher_string"),count_autotime_(0),count_manual_(0)
 	{
-		publisher_ = this->create_publisher<std_msgs::msg::String>
-								 ( "topic_string", rclcpp::QoS(10) );
-		timer_ = this->create_wall_timer( 500ms, std::bind(&minimal_publisher::timer_callback,this) );
+		publisher_autotime_ = this->create_publisher<std_msgs::msg::String>("topic_string_autotime", 10);
+		publisher_manual_ = this->create_publisher<std_msgs::msg::String>("topic_string_manual", 10);
+		timer_ = this->create_wall_timer(
+			std::chrono::milliseconds(500),
+			std::bind(&publisher_string::timer_callback, this)	);
 	}
-	/* 解建構函數 */
-	~minimal_publisher(){}
+	~publisher_string(){}
+
+	void pub_manual_(void)
+	{
+		msg.data = "manual pub: " + std::to_string(++count_manual_);
+		RCLCPP_INFO(this->get_logger(), msg.data.c_str());
+		publisher_manual_->publish(msg);
+	}
 private:
-	void timer_callback()
+	void timer_callback(void)
 	{
-		msg.data = "ROS2 TsaiLiChun " + std::to_string(count_++);
-		RCLCPP_INFO(this->get_logger(), "%s", msg.data.c_str());
-      	publisher_->publish(msg);
+		msg.data = "autotime pub: " + std::to_string(++count_autotime_);
+		RCLCPP_INFO(this->get_logger(), msg.data.c_str());
+		publisher_autotime_->publish(msg);
 	}
 
-	/* 建立topic發佈物件 */
-	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
-	/* 建立timer物件 */
+	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_autotime_;
+	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_manual_;
 	rclcpp::TimerBase::SharedPtr timer_;
-	/* 建立發佈用資料 */
 	std_msgs::msg::String msg;
-	/* 宣告計數變數 */
-	size_t count_;
+	size_t count_autotime_;
+	size_t count_manual_;
 };
-
 /* Class End */
 
 
@@ -94,8 +91,16 @@ private:
 **	**/
 int main(int argc, char* argv[])
 {
-	rclcpp::init(argc, argv);
-	rclcpp::spin(std::make_shared<minimal_publisher>());
+	rclcpp::init(argc,argv);
+	std::shared_ptr<publisher_string> ps = std::make_shared<publisher_string>();
+	rclcpp::Rate loop_rate(std::chrono::milliseconds(250));
+
+	while( rclcpp::ok() )
+	{
+		rclcpp::spin_some(ps);
+		ps->pub_manual_();
+		loop_rate.sleep();
+	}
 	rclcpp::shutdown();
 }
 
