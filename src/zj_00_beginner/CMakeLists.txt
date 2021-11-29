@@ -23,9 +23,13 @@ find_package(std_msgs REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
+# 指定額外的include路徑
+include_directories(./include/${PROJECT_NAME})
+
 # 生成可執行文件與其所需來源檔
 add_executable(01_publisher 
-			src/01_publisher.cpp	)
+			src/01_publisher.cpp 
+			./include/${PROJECT_NAME}/classAPI_publisher.cpp	)
 ament_target_dependencies(01_publisher rclcpp std_msgs)
 
 install(TARGETS
