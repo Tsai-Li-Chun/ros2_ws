@@ -55,7 +55,6 @@
 /** * @brief class(publisher_string) 建構涵式
  	* @param None
  	* @return None
- 	* @
 **	**/
 publisher_string::publisher_string():
 	rclcpp::Node("publisher_string"),

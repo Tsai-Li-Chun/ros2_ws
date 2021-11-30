@@ -61,6 +61,7 @@ public:
 	publisher_string();
 	~publisher_string();
 	void pub_manual_(void);
+
 };
 
 /* Class End */

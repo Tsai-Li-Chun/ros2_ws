@@ -14,6 +14,7 @@
 /* User Includes --------------------------------------------*/
 /* User Includes Begin */
 #include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
 #include "classAPI_publisher.hpp"
 /* User Includes End */
 
