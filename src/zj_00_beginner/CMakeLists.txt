@@ -32,8 +32,14 @@ add_executable(01_publisher
 			./include/${PROJECT_NAME}/classAPI_publisher.cpp	)
 ament_target_dependencies(01_publisher rclcpp std_msgs)
 
+add_executable(02_subscriber 
+			src/02_subscriber.cpp
+			./include/${PROJECT_NAME}/classAPI_subscriber.cpp	)
+ament_target_dependencies(02_subscriber rclcpp std_msgs)
+
 install(TARGETS
 	01_publisher
+	02_subscriber
 	DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

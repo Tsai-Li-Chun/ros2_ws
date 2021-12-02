@@ -1,5 +1,5 @@
 /** ******************************************************
-	* @file		01_publisher.cpp
+	* @file		02_subscriber.cpp
 	* @author	Tsai,Li-chun
 	******************************************************
 **	**/
@@ -9,13 +9,13 @@
 /* System Includes Begin */
 #include <iostream>
 #include <memory>
-#include <chrono>
+#include <functional>
 /* System Includes End */
 /* User Includes --------------------------------------------*/
 /* User Includes Begin */
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "classAPI_publisher.hpp"
+#include "classAPI_subscriber.hpp"
 /* User Includes End */
 
 /* namespace ------------------------------------------------*/
@@ -63,21 +63,11 @@ int main(int argc, char* argv[])
 {
 	/* 初始化ROS2 Node */
 	rclcpp::init(argc,argv);
-	/* 建立發佈服務物件 */
-	std::shared_ptr<publisher_string> ps = std::make_shared<publisher_string>();
-	/* 建立delay服務物件 */
-	rclcpp::Rate loop_rate(std::chrono::milliseconds(250));
+	/* 建立訂閱服務物件 */
+	std::shared_ptr<subscriber_string> ss = std::make_shared<subscriber_string>();
 
-	/* main loop, 按下ctrl+C跳出 */
-	while( rclcpp::ok() )
-	{
-		/* 更新物件執行 */
-		rclcpp::spin_some(ps);
-		/* 手動呼叫發佈函式 */
-		ps->pub_manual_();
-		/* delay */
-		loop_rate.sleep();
-	}
+	/* main loop */
+	rclcpp::spin(ss);
 
 	/* 關閉Node */
 	rclcpp::shutdown();
@@ -89,4 +79,4 @@ int main(int argc, char* argv[])
 /* ---------------------------------------------------------*/
 
 
-/* ***** END OF 01_publisher.cpp ***** */
+/* ***** END OF 02_subscriber.cpp ***** */

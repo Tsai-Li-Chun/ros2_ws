@@ -3,9 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "/usr/include/**",
+                "${workspaceFolder}/zj_00_beginner/include/zj_00_beginner",
                 "/opt/ros/foxy/include/**",
-                "~/ros2_ws/src/**"
+                "/usr/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

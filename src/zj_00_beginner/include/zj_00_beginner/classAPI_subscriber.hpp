@@ -1,12 +1,12 @@
 /** ******************************************************
-	* @file		classAPI_publisher.h
+	* @file		classAPI_subscriber.hpp.h
 	* @author	Tsai,Li-chun
 	******************************************************
 **	**/
 
 /* Define to prevent recursive inclusi ----------------------*/
-#ifndef __classAPI_publisher_HPP__
-#define __classAPI_publisher_HPP__
+#ifndef __classAPI_subscriber_HPP__
+#define __classAPI_subscriber_HPP__
 
 
 /* System Includes ------------------------------------------*/
@@ -32,40 +32,27 @@
 /* Extern Class -------------------------------------------*/
 /* Extern Class Begin */
 
-/** * @brief 發佈服務物件，繼承rclcpp::Node
+/** * @brief 訂閱服務物件，繼承rclcpp::Node
  	* @param None
  	* @return None
 **	**/
-class publisher_string : public rclcpp::Node
+class subscriber_string : public rclcpp::Node
 {
 private:
 /* Class --------------------------------------------------*/
-	/* 宣告自動發佈用物件 */
-	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_autotime_;
-	/* 宣告手動發佈用物件 */
-	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_manual_;
-	/* 宣告時間管理物件 */
-	rclcpp::TimerBase::SharedPtr timer_;
-	/* 宣告string資料型態物件 */
-	std_msgs::msg::String msg;
-/* Variables ----------------------------------------------*/
-	/* 宣告計數自動發佈次數用變數 */
-	size_t count_autotime_;
-	/* 宣告計數手動發佈次數用變數 */
-	size_t count_manual_;
+	/* 宣告訂閱用物件 */
+	rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscriber_autotime_;
+	/* 宣告訂閱用物件 */
+	rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscriber_manual_;
 /* Function ----------------------------------------------*/
 	// 
-	void timer_callback(void);
-
+	void topic_string_autotime_callback(std_msgs::msg::String::SharedPtr);
+	void topic_string_manual_callback(std_msgs::msg::String::SharedPtr);
 public:
 /* setup -------------------------------------------------*/
 	// 
-	publisher_string();
-	~publisher_string();
-/* Function ----------------------------------------------*/
-	// 
-	void pub_manual_(void);
-
+	subscriber_string();
+	~subscriber_string();
 };
 
 /* Extern Class End */
@@ -81,6 +68,6 @@ public:
 /* Function End */
 
 
-#endif /*__ classAPI_publisher_HPP__ */
+#endif /*__ classAPI_subscriber_HPP__ */
 
-/* ***** END OF classAPI_publisher.HPP ***** */
+/* ***** END OF classAPI_subscriber.HPP ***** */

@@ -1,5 +1,5 @@
 /** ******************************************************
-	* @file		classAPI_publisher.cpp
+	* @file		classAPI_subscriber.cpp
 	* @author	Tsai,Li-chun
 	******************************************************
 **	**/
@@ -8,13 +8,11 @@
 /* System Includes ------------------------------------------*/
 /* System Includes Begin */
 #include <iostream>
-#include <memory>
 #include <functional>
-#include <chrono>
 /* System Includes End */
 /* User Includes --------------------------------------------*/
 /* User Includes Begin */
-#include "classAPI_publisher.hpp"
+#include "classAPI_subscriber.hpp"
 /* User Includes End */
 
 /* namespace ------------------------------------------------*/
@@ -57,61 +55,55 @@
  	* @param None
  	* @return None
 **	**/
-publisher_string::publisher_string():
-	rclcpp::Node("publisher_string"),
-	count_autotime_(0),
-	count_manual_(0)
+subscriber_string::subscriber_string():
+	rclcpp::Node("subscriber_string")
 {
-	/* 建立自動發佈用物件，並設定topic名與QoS */
-	publisher_autotime_ = this->create_publisher<std_msgs::msg::String>(
-		"topic_string_autotime", 
-		10	);
-	/* 建立手動發佈用物件，並設定topic名與QoS */
-	publisher_manual_ = this->create_publisher<std_msgs::msg::String>(
+	/* 建立訂閱用物件，並設定訂閱topic名,QoS,接收中斷函式 */
+	subscriber_autotime_ = this->create_subscription<std_msgs::msg::String>(
+		"topic_string_autotime",
+		10,
+		std::bind(
+			&subscriber_string::topic_string_autotime_callback, 
+			this, 
+			std::placeholders::_1)	);
+	/* 建立訂閱用物件，並設定訂閱topic名,QoS,接收中斷函式 */
+	subscriber_manual_ = this->create_subscription<std_msgs::msg::String>(
 		"topic_string_manual",
-		10	);
-	/* 建立時間管理物件，並設定中斷時間與指定callback函式 */
-	timer_ = this->create_wall_timer(
-		std::chrono::milliseconds(500),
-		std::bind(&publisher_string::timer_callback, this)	);
+		10,
+		std::bind(
+			&subscriber_string::topic_string_manual_callback,
+			this,
+			std::placeholders::_1)	);
 }
 
 /** * @brief 解建構涵式
  	* @param None
  	* @return None
 **	**/
-publisher_string::~publisher_string()
+subscriber_string::~subscriber_string()
 {
 	/* 打印結束訊息 */
-	RCLCPP_INFO(this->get_logger(),"Quit Node publisher_string");
+	RCLCPP_INFO(this->get_logger(), "Quit Node subscriber_string");
 }
 
-/** * @brief 手動發佈msg涵式
+/** * @brief topic_string_autotime接收中斷callback函式
  	* @param None
  	* @return None
 **	**/
-void publisher_string::pub_manual_(void)
+void subscriber_string::topic_string_autotime_callback(std_msgs::msg::String::SharedPtr msg)
 {
-	/* msg填值 */
-	msg.data = "pub_manual: " + std::to_string(++count_manual_);
-	/* 打印相關訊息 */
-	RCLCPP_INFO(this->get_logger(), msg.data.c_str());
-	/* 發佈(手動呼叫此函式) */
-	publisher_manual_->publish(msg);
+	/* 打印接收訊息 */
+	RCLCPP_INFO(this->get_logger(), msg->data.c_str());
 }
 
-/** * @brief 500ms計時中斷callback函式
+/** * @brief topic_string_manual接收中斷callback函式
  	* @param None
  	* @return None
 **	**/
-void publisher_string::timer_callback(void)
+void subscriber_string::topic_string_manual_callback(std_msgs::msg::String::SharedPtr msg)
 {
-	/* msg填值 */
-	msg.data = "pub_autotime: " + std::to_string(++count_autotime_);
-	/* 打印相關訊息 */
-	RCLCPP_INFO(this->get_logger(), msg.data.c_str());
-	/* 發佈(中斷時間一到會自動呼叫此函式) */
-	publisher_autotime_->publish(msg);
+	/* 打印接收訊息 */
+	RCLCPP_INFO(this->get_logger(), msg->data.c_str());
 }
 
 /* Program End */
@@ -120,4 +112,4 @@ void publisher_string::timer_callback(void)
 /* ---------------------------------------------------------*/
 
 
-/* ***** END OF classAPI_publisher.cpp ***** */
+/* ***** END OF classAPI_subscriber.cpp ***** */
