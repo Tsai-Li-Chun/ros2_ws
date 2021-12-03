@@ -19,6 +19,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(example_interfaces REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -37,9 +38,19 @@ add_executable(02_subscriber
 			./include/${PROJECT_NAME}/classAPI_subscriber.cpp	)
 ament_target_dependencies(02_subscriber rclcpp std_msgs)
 
+add_executable(03_service_TwoIntAdd 
+			src/03_service_two_int_add.cpp	)
+ament_target_dependencies(03_service_TwoIntAdd rclcpp example_interfaces)
+
+add_executable(04_client_TwoIntAdd 
+			src/04_client_two_int_add.cpp	)
+ament_target_dependencies(04_client_TwoIntAdd rclcpp example_interfaces)
+
 install(TARGETS
 	01_publisher
 	02_subscriber
+	03_service_TwoIntAdd
+	04_client_TwoIntAdd
 	DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
