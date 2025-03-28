@@ -65,11 +65,11 @@ publisher_string::publisher_string():
 	/* 建立自動發佈用物件，並設定topic名與QoS */
 	publisher_autotime_ = this->create_publisher<std_msgs::msg::String>(
 		"topic_string_autotime", 
-		10	);
+		rclcpp::QoS(10)	);
 	/* 建立手動發佈用物件，並設定topic名與QoS */
 	publisher_manual_ = this->create_publisher<std_msgs::msg::String>(
 		"topic_string_manual",
-		10	);
+		rclcpp::QoS(10)	);
 	/* 建立時間管理物件，並設定中斷時間與指定callback函式 */
 	timer_ = this->create_wall_timer(
 		std::chrono::milliseconds(500),

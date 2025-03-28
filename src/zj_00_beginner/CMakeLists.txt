@@ -20,38 +20,39 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(example_interfaces REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(PkgConfig  REQUIRED)
+pkg_check_modules(LIBMODBUS REQUIRED libmodbus)
 
 # 指定額外的include路徑
 include_directories(./include/${PROJECT_NAME})
 
 # 生成可執行文件與其所需來源檔
 add_executable(01_publisher 
-			src/01_publisher.cpp 
-			./include/${PROJECT_NAME}/classAPI_publisher.cpp	)
+src/01_publisher.cpp 
+./include/${PROJECT_NAME}/classAPI_publisher.cpp	)
 ament_target_dependencies(01_publisher rclcpp std_msgs)
+target_include_directories(01_publisher PUBLIC ${LIBMODBUS_INCLUDE_DIRS})
+target_link_libraries(01_publisher ${LIBMODBUS_LIBRARIES})
 
 add_executable(02_subscriber 
-			src/02_subscriber.cpp
-			./include/${PROJECT_NAME}/classAPI_subscriber.cpp	)
+src/02_subscriber.cpp
+./include/${PROJECT_NAME}/classAPI_subscriber.cpp	)
 ament_target_dependencies(02_subscriber rclcpp std_msgs)
 
 add_executable(03_service_TwoIntAdd 
-			src/03_service_two_int_add.cpp	)
+src/03_service_two_int_add.cpp	)
 ament_target_dependencies(03_service_TwoIntAdd rclcpp example_interfaces)
 
 add_executable(04_client_TwoIntAdd 
-			src/04_client_two_int_add.cpp	)
+src/04_client_two_int_add.cpp	)
 ament_target_dependencies(04_client_TwoIntAdd rclcpp example_interfaces)
 
 install(TARGETS
-	01_publisher
-	02_subscriber
-	03_service_TwoIntAdd
-	04_client_TwoIntAdd
-	DESTINATION lib/${PROJECT_NAME})
+01_publisher
+02_subscriber
+03_service_TwoIntAdd
+04_client_TwoIntAdd
+DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
 	find_package(ament_lint_auto REQUIRED)

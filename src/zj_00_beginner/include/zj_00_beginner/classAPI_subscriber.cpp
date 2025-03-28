@@ -61,15 +61,15 @@ subscriber_string::subscriber_string():
 	/* 建立訂閱用物件，並設定訂閱topic名,QoS,接收中斷函式 */
 	subscriber_autotime_ = this->create_subscription<std_msgs::msg::String>(
 		"topic_string_autotime",
-		10,
+		rclcpp::QoS(10),
 		std::bind(
-			&subscriber_string::topic_string_autotime_callback, 
-			this, 
+			&subscriber_string::topic_string_autotime_callback,
+			this,
 			std::placeholders::_1)	);
 	/* 建立訂閱用物件，並設定訂閱topic名,QoS,接收中斷函式 */
 	subscriber_manual_ = this->create_subscription<std_msgs::msg::String>(
 		"topic_string_manual",
-		10,
+		rclcpp::QoS(10),
 		std::bind(
 			&subscriber_string::topic_string_manual_callback,
 			this,

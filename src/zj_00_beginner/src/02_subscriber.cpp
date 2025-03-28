@@ -7,14 +7,9 @@
 
 /* System Includes ------------------------------------------*/
 /* System Includes Begin */
-#include <iostream>
-#include <memory>
-#include <functional>
 /* System Includes End */
 /* User Includes --------------------------------------------*/
 /* User Includes Begin */
-#include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
 #include "classAPI_subscriber.hpp"
 /* User Includes End */
 
