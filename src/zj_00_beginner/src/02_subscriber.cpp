@@ -59,10 +59,10 @@ int main(int argc, char* argv[])
 	/* 初始化ROS2 Node */
 	rclcpp::init(argc,argv);
 	/* 建立訂閱服務物件 */
-	std::shared_ptr<subscriber_string> ss = std::make_shared<subscriber_string>();
+	std::shared_ptr<subscriber_motors_info> smi = std::make_shared<subscriber_motors_info>();
 
 	/* main loop */
-	rclcpp::spin(ss);
+	rclcpp::spin(smi);
 
 	/* 關閉Node */
 	rclcpp::shutdown();

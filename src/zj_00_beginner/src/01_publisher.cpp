@@ -59,19 +59,13 @@ int main(int argc, char* argv[])
 	/* 初始化ROS2 Node */
 	rclcpp::init(argc,argv);
 	/* 建立發佈服務物件 */
-	std::shared_ptr<publisher_string> ps = std::make_shared<publisher_string>();
-	/* 建立delay服務物件 */
-	rclcpp::Rate loop_rate(std::chrono::milliseconds(250));
+	std::shared_ptr<publisher_motors_info> pmi = std::make_shared<publisher_motors_info>();
 
 	/* main loop, 按下ctrl+C跳出 */
 	while( rclcpp::ok() )
 	{
 		/* 更新物件執行 */
-		rclcpp::spin_some(ps);
-		/* 手動呼叫發佈函式 */
-		ps->pub_manual_();
-		/* delay */
-		loop_rate.sleep();
+		rclcpp::spin_some(pmi);
 	}
 
 	/* 關閉Node */

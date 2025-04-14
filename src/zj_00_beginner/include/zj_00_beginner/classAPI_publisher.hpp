@@ -16,6 +16,7 @@
 /* User Includes Begin */
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "zj_00_beginner_interfaces/msg/interface_multiple_motors.hpp"
 /* User Includes End */
 
 
@@ -36,35 +37,36 @@
  	* @param None
  	* @return None
 **	**/
-class publisher_string : public rclcpp::Node
+class publisher_motors_info : public rclcpp::Node
 {
 private:
 /* Class --------------------------------------------------*/
-	/* 宣告自動發佈用物件 */
-	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_autotime_;
-	/* 宣告手動發佈用物件 */
-	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_manual_;
-	/* 宣告時間管理物件 */
-	rclcpp::TimerBase::SharedPtr timer_;
-	/* 宣告string資料型態物件 */
+	/* declare publishing object, used for publishing MultipleMotors data */
+	rclcpp::Publisher<zj_00_beginner_interfaces::msg::InterfaceMultipleMotors>::SharedPtr _publisher_motors_info;
+	/* declare time management object */
+	rclcpp::TimerBase::SharedPtr _timer;
+	/* declare String data type object */
 	std_msgs::msg::String msg;
+	/* declare MultipleMotors data type object */
+	zj_00_beginner_interfaces::msg::InterfaceMultipleMotors motors_info;
+	/* declare SingleMotor data type object */
+	zj_00_beginner_interfaces::msg::InterfaceSingleMotor motor_info;
 /* Variables ----------------------------------------------*/
-	/* 宣告計數自動發佈次數用變數 */
-	size_t count_autotime_;
-	/* 宣告計數手動發佈次數用變數 */
-	size_t count_manual_;
-/* Function ----------------------------------------------*/
-	// 
-	void timer_callback(void);
+	/* declare variable to count the number of publish */
+	size_t count;
+/* Function -----------------------------------------------*/
+	/* declare timer callback function for _timer object */
+	void callback_timer(void);
 
 public:
 /* setup -------------------------------------------------*/
-	// 
-	publisher_string();
-	~publisher_string();
-/* Function ----------------------------------------------*/
-	// 
-	void pub_manual_(void);
+	/* constructor */
+	publisher_motors_info();
+	/* destructor */
+	~publisher_motors_info();
+/* Class --------------------------------------------------*/
+/* Variables ----------------------------------------------*/
+/* Function -----------------------------------------------*/
 
 };
 

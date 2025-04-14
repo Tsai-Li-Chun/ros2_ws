@@ -57,61 +57,57 @@
  	* @param None
  	* @return None
 **	**/
-publisher_string::publisher_string():
-	rclcpp::Node("publisher_string"),
-	count_autotime_(0),
-	count_manual_(0)
+publisher_motors_info::publisher_motors_info():
+	rclcpp::Node("publisher_motors_info"),
+	count(0)
 {
 	/* 建立自動發佈用物件，並設定topic名與QoS */
-	publisher_autotime_ = this->create_publisher<std_msgs::msg::String>(
-		"topic_string_autotime", 
+	_publisher_motors_info = this->create_publisher<zj_00_beginner_interfaces::msg::InterfaceMultipleMotors>(
+		"topic_MultipleMotors",
 		rclcpp::QoS(10)	);
-	/* 建立手動發佈用物件，並設定topic名與QoS */
-	publisher_manual_ = this->create_publisher<std_msgs::msg::String>(
-		"topic_string_manual",
-		rclcpp::QoS(10)	);
+
 	/* 建立時間管理物件，並設定中斷時間與指定callback函式 */
-	timer_ = this->create_wall_timer(
+	_timer = this->create_wall_timer(
 		std::chrono::milliseconds(500),
-		std::bind(&publisher_string::timer_callback, this)	);
+		std::bind(&publisher_motors_info::callback_timer, this)	);
+
+	/* set the array length of SingleMotor in MultipleMotors */
+	motors_info.motor_info.resize(7);
 }
 
 /** * @brief 解建構涵式
  	* @param None
  	* @return None
 **	**/
-publisher_string::~publisher_string()
+publisher_motors_info::~publisher_motors_info()
 {
 	/* 打印結束訊息 */
 	RCLCPP_INFO(this->get_logger(),"Quit Node publisher_string");
-}
-
-/** * @brief 手動發佈msg涵式
- 	* @param None
- 	* @return None
-**	**/
-void publisher_string::pub_manual_(void)
-{
-	/* msg填值 */
-	msg.data = "pub_manual: " + std::to_string(++count_manual_);
-	/* 打印相關訊息 */
-	RCLCPP_INFO(this->get_logger(), msg.data.c_str());
-	/* 發佈(手動呼叫此函式) */
-	publisher_manual_->publish(msg);
 }
 
 /** * @brief 500ms計時中斷callback函式
  	* @param None
  	* @return None
 **	**/
-void publisher_string::timer_callback(void)
+void publisher_motors_info::callback_timer(void)
 {
-	/* msg填值 */
-	msg.data = "pub_autotime: " + std::to_string(++count_autotime_);
+	/* fill in value */
+	motors_info.link_form = "parallel connection";
+	motors_info.quantity = 7;
+	for(int i=0;i<7;i++)
+	{
+		motor_info.id = count+i;
+		motor_info.device_type = "delta A3";
+		motor_info.cmd_position = count+i+1.1;
+		motor_info.cmd_velocity = count+i+2.2;
+		motors_info.motor_info[i] = motor_info;
+	}
+
+	msg.data = "number of publish: " + std::to_string(++count);
 	/* 打印相關訊息 */
 	RCLCPP_INFO(this->get_logger(), msg.data.c_str());
 	/* 發佈(中斷時間一到會自動呼叫此函式) */
-	publisher_autotime_->publish(msg);
+	_publisher_motors_info->publish(motors_info);
 }
 
 /* Program End */

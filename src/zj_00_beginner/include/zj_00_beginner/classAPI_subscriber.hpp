@@ -16,6 +16,7 @@
 /* User Includes Begin */
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "zj_00_beginner_interfaces/msg/interface_multiple_motors.hpp"
 /* User Includes End */
 
 
@@ -36,23 +37,22 @@
  	* @param None
  	* @return None
 **	**/
-class subscriber_string : public rclcpp::Node
+class subscriber_motors_info : public rclcpp::Node
 {
 private:
 /* Class --------------------------------------------------*/
-	/* 宣告訂閱用物件 */
-	rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscriber_autotime_;
-	/* 宣告訂閱用物件 */
-	rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscriber_manual_;
+	/* declare subscribing object, used for publishing MultipleMotors data */
+	rclcpp::Subscription<zj_00_beginner_interfaces::msg::InterfaceMultipleMotors>::SharedPtr _subscriber_motors_info;
 /* Function ----------------------------------------------*/
-	// 
-	void topic_string_autotime_callback(std_msgs::msg::String::SharedPtr);
-	void topic_string_manual_callback(std_msgs::msg::String::SharedPtr);
+	/* declare motors_info callback function for _subscriber object */
+	void callback_topic_motors_info(zj_00_beginner_interfaces::msg::InterfaceMultipleMotors::SharedPtr);
+
 public:
 /* setup -------------------------------------------------*/
-	// 
-	subscriber_string();
-	~subscriber_string();
+	/* constructor */
+	subscriber_motors_info();
+	/* destructor */
+	~subscriber_motors_info();
 };
 
 /* Extern Class End */

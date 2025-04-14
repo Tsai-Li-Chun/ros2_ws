@@ -3,8 +3,10 @@
 		{
 			"name": "Linux",
 			"includePath": [
-				"${default}",
-				"/opt/ros/humble/include/**"
+				"/usr/include/**",
+				"/opt/ros/humble/include/**",
+				"/home/richie/ros2_ws/src/zj_00_beginner/include/zj_00_beginner/**",
+				"/home/richie/ros2_ws/install/zj_00_beginner_interfaces/include/**"
 			],
 			"defines": [],
 			"compilerPath": "/usr/bin/gcc",
